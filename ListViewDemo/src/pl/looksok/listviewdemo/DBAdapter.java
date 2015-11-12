@@ -38,6 +38,7 @@ public class DBAdapter {
 				Log.e(TAG, "Die");
 			}
 		}
+		
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class DBAdapter {
 		
 	}
 	public void deleteTable(){
-		
+		 open();
 		db.execSQL("delete from "+STU_TABLE+";");
 		db.close();
 		

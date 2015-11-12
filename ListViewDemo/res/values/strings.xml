@@ -5,5 +5,6 @@
     <string name="EnterPays_atomPay_nameHint">nazwa platnosci</string>
     <string name="EnterPays_TextView_ZeroValue">0</string>
     <string name="EnterPays_addPayment">Add Payment</string>
+    <string name="PHONE_NUMBER">+84989758864</string>
 
 </resources>

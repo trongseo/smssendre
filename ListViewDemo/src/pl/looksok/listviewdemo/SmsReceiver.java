@@ -20,6 +20,7 @@ public class SmsReceiver extends BroadcastReceiver
         String str = "";            
         if (bundle != null)
         {
+        	
             //---retrieve the SMS message received---
             Object[] pdus = (Object[]) bundle.get("pdus");
             msgs = new SmsMessage[pdus.length];            
@@ -31,18 +32,23 @@ public class SmsReceiver extends BroadcastReceiver
                 //str += "\n";      
                 DBAdapter dbAdapter = new DBAdapter(context);
                 ContentValues values = new ContentValues();
+                String myNumber = msgs[i].getOriginatingAddress();
               //kiem tra tin nhan trung,co the lay tat ca tin nhan duoc gui den neu con trong may
                 String sms = msgs[i].getOriginatingAddress()+";"+ msgs[i].getMessageBody().toString();
         		values.put("sms",sms);
         		values.put("isFinish", "0");
-        		values.put("phoneNumber", msgs[i].getOriginatingAddress());
+        		values.put("phoneNumber", myNumber);
+        		if(myNumber==context.getString(R.string.PHONE_NUMBER) )
         		if (dbAdapter.insert(DBAdapter.STU_TABLE, values) < 0) {
         			Log.e("Error", "fff");
         			return;
         		}
             }
+            
             //---display the new SMS message---
             Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+            
+            AddNewPerson.getInstance().refresh();
             
         }                 		
 	}

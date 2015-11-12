@@ -30,17 +30,19 @@ android:gravity="center_horizontal"
         android:gravity="center"
           android:drawableLeft="@android:drawable/btn_star_big_on" />
        />
-    </LinearLayout>
-    
-    <Button
+       
+         <Button
         android:id="@+id/EnterPays_addAtomPayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-       	android:visibility="gone"
+       	android:visibility="visible"
         android:text="@string/EnterPays_addPayment"
         android:drawableLeft="@android:drawable/ic_input_add" />
+    </LinearLayout>
+    
+  
 
     <ListView
         android:id="@+id/EnterPays_atomPaysList"

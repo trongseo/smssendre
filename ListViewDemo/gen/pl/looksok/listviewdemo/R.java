@@ -35,6 +35,7 @@ public final class R {
         public static final int EnterPays_TextView_ZeroValue=0x7f050002;
         public static final int EnterPays_addPayment=0x7f050003;
         public static final int EnterPays_atomPay_nameHint=0x7f050001;
+        public static final int PHONE_NUMBER=0x7f050004;
         public static final int app_name=0x7f050000;
     }
     public static final class style {
