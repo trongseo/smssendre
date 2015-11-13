@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ListViewDemo</string>
-    <string name="EnterPays_atomPay_nameHint">nazwa platnosci</string>
+    <string name="app_name">VNPT Task</string>
+    <string name="EnterPays_atomPay_nameHint"></string>
     <string name="EnterPays_TextView_ZeroValue">0</string>
     <string name="EnterPays_addPayment">Add Payment</string>
+    
+    <string name="color">Color</string>
+    	<string name="blue">Blue</string>
+    	<string name="purple">Purple</string>
+    	<string name="green">Green</string>
+    	<string name="yellow">Yellow</string>
+    	<string name="red">Red</string>
+    	   <string name="font">Font</string>
+    	<string name="arial">Arial</string>
+    	<string name="times">Times New Roman</string>
+    	<string name="roboto">Roboto</string>
+    	<string name="comic">Comic</string>
+    	<string name="century">Century</string>
     <string name="PHONE_NUMBER">+84989758864</string>
 
 </resources>

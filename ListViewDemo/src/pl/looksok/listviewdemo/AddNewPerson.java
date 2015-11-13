@@ -1,6 +1,8 @@
 package pl.looksok.listviewdemo;
 
 
+
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,14 +15,19 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class AddNewPerson extends Activity {
 
@@ -44,6 +51,7 @@ public class AddNewPerson extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	
 		setContentView(R.layout.activity_list_view);
 		
 		setupListViewAdapter();
@@ -53,6 +61,85 @@ public class AddNewPerson extends Activity {
 		dbAdapter = new DBAdapter(this);
 		loadDataListView("0");
 	}
+	
+	//region menu
+	
+
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.option_menu_color, menu);
+		
+		return true;
+		//option_menu_font
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		int item = 1;
+		switch (item) {
+		case 0:
+			menu.clear();
+			getMenuInflater().inflate(R.menu.option_menu_font, menu);
+			break;
+		case 1:
+			menu.clear();
+			getMenuInflater().inflate(R.menu.option_menu_color, menu);
+			break;
+		}
+		return true;
+	}
+	int color=0;
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	
+		switch (item.getItemId()) {
+//		case R.id.arial:
+//			typeFace = Typeface.createFromAsset(getAssets(), "arial.ttf");
+//			txtHello.setTypeface(typeFace);
+//			break;
+//		case R.id.times:
+//			typeFace = Typeface.createFromAsset(getAssets(), "times.ttf");
+//			txtHello.setTypeface(typeFace);
+//			break;
+//		case R.id.century:
+//			typeFace = Typeface.createFromAsset(getAssets(), "century.ttf");
+//			txtHello.setTypeface(typeFace);
+//			break;
+//		case R.id.comic:
+//			typeFace = Typeface.createFromAsset(getAssets(), "comic.ttf");
+//			txtHello.setTypeface(typeFace);
+//			break;
+//		case R.id.roboto:
+//			typeFace = Typeface.createFromAsset(getAssets(), "roboto.ttf");
+//			txtHello.setTypeface(typeFace);
+//			break;
+		case R.id.blue:
+			color = getResources().getColor(R.color.blue);
+			
+			break;
+		case R.id.green:
+			color = getResources().getColor(R.color.green);
+			
+			break;
+		case R.id.red:
+			color = getResources().getColor(R.color.red);
+			
+			break;
+		case R.id.purple:
+			color = getResources().getColor(R.color.purple);
+			
+			break;
+		case R.id.yellow:
+			color = getResources().getColor(R.color.yellow);
+			
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	//end_region menu
+	
 	public void loadDataListView(String isFinish) {
 		
 		if(isFinish=="1"){
@@ -168,7 +255,8 @@ public class AddNewPerson extends Activity {
 		           	  String formattedDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
 		           	  ngaynhan = formattedDate;
 		           	  sodienthoai= cursor.getString(cursor.getColumnIndexOrThrow("address"));
-		           	  String smsSave =ngaynhan +System.getProperty("line.separator")+cursor.getString(cursor.getColumnIndexOrThrow("body"))+";"+sodienthoai;
+		           	  //String smsSave =ngaynhan +System.getProperty("line.separator")+cursor.getString(cursor.getColumnIndexOrThrow("body"))+";"+sodienthoai;
+		             String smsSave =cursor.getString(cursor.getColumnIndexOrThrow("body"));
 				      AddSms( smsSave,  sodienthoai,date);
 				      numBreak++;
 				    	//if(numBreak==200) break;
@@ -212,15 +300,11 @@ public class AddNewPerson extends Activity {
 			});
 
 	}
-	//region dss
+	
 	private String getDateTime(Date dt) {
 	        SimpleDateFormat dateFormat = new SimpleDateFormat(
 	                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 	   
-	        dateFormat.format(dt);
-	      //endregion beFound
-
-	         
 	        return dateFormat.format(dt);
 	}
 	private boolean isExist(long datestr){

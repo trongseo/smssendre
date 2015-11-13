@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+	 <item android:id="@+id/arial"
+        android:title="@string/arial"/>
+    <item android:id="@+id/times"
+        android:title="@string/times"/>
+    <item android:id="@+id/comic"
+        android:title="@string/comic"/>
+    <item android:id="@+id/roboto"
+        android:title="@string/roboto"/>
+    <item android:id="@+id/century"
+        android:title="@string/century"/>
+</menu>
+
+

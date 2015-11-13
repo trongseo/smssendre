@@ -3,6 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
      android:orientation="vertical"
+         android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ListViewActivity" >
 
     <LinearLayout
@@ -20,7 +24,7 @@ android:gravity="center_horizontal"
         android:gravity="center"
         android:text="Chưa"
           android:drawableLeft="@android:drawable/ic_input_delete" />
-       />
+    
  <Button
         android:id="@+id/btnOK"
         android:layout_width="90sp"
@@ -29,16 +33,15 @@ android:gravity="center_horizontal"
         android:text="Xong"
         android:gravity="center"
           android:drawableLeft="@android:drawable/btn_star_big_on" />
-       />
+     
        
          <Button
         android:id="@+id/EnterPays_addAtomPayment"
-        android:layout_width="wrap_content"
+        android:layout_width="90sp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
        	android:visibility="visible"
         android:text="Tải... "
+        android:gravity="center"
         android:drawableLeft="@android:drawable/ic_menu_more" />
     </LinearLayout>
     
