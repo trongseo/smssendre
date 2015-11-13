@@ -4,11 +4,7 @@ package pl.looksok.listviewdemo;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-
-
-
-
+import java.util.Locale;
 
 import android.R.bool;
 import android.app.Activity;
@@ -70,7 +66,7 @@ public class AddNewPerson extends Activity {
 //		+ ", phoneNumber TEXT NOT NULL"  
 //		+ ", dateCreate DATE DEFAULT CURRENT_DATE NOT NULL" + ")";
 		String[] ar= new String[]{};
-		ArrayList<ContentValues> arrData =  dbAdapter.getData("Select * from tbl_sms where isFinish='"+isFinish+"' order by dateCreate desc" , new String[]{});
+		ArrayList<ContentValues> arrData =  dbAdapter.getData("Select * from tbl_sms where isFinish='"+isFinish+"' order by dateLong desc" , new String[]{});
 		int postx=0;
 		for(ContentValues myRow: arrData){
 			 String mySms = (String)	myRow.get("sms");
@@ -108,8 +104,12 @@ public class AddNewPerson extends Activity {
 					break;
 					
 					} } }; 
-					AlertDialog.Builder builder = new AlertDialog.Builder(this); 
-					builder.setMessage("Bạn đã hoàn thành công việc ?") .setPositiveButton("Ok", dialogClickListener) .setNegativeButton("Chưa", dialogClickListener).show(); 
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+					String smsS="Bạn đã hoàn thành công việc ?";
+					if(adapter.isF==true){
+						 smsS="Bạn muốn xóa ?";
+					}
+					builder.setMessage(smsS) .setPositiveButton("Ok", dialogClickListener) .setNegativeButton("Chưa", dialogClickListener).show(); 
 					
 		
 		
@@ -118,76 +118,72 @@ public class AddNewPerson extends Activity {
 		adapter.remove(itemToRemove);
 		double idre = itemToRemove.getValue();
 		String[] arrCon= new String[]{};
-		dbAdapter.runSQL("update tbl_sms set isFinish=1 where _id="+idre, arrCon);
+		String smsS="Bạn đã hoàn thành công việc ?";
+		if(adapter.isF==true){
+			dbAdapter.runSQL("delete from tbl_sms where  _id="+idre, arrCon);
+		}else
+		{
+			dbAdapter.runSQL("update tbl_sms set isFinish=1 where _id="+idre, arrCon);	
+		}
+		
 	}
 
 	private void setupListViewAdapter() {
-		adapter = new AtomPayListAdapter(AddNewPerson.this, R.layout.atom_pay_list_item, new ArrayList<AtomPayment>());
+		adapter = new AtomPayListAdapter(AddNewPerson.this, R.layout.atom_pay_list_item, new ArrayList<AtomPayment>(),false);
 		ListView atomPaysListView = (ListView)findViewById(R.id.EnterPays_atomPaysList);
 		atomPaysListView.setAdapter(adapter);
 		
 	}
 	private void setupListViewAdapterOk() {
-		adapter = new AtomPayListAdapter(AddNewPerson.this, R.layout.atom_pay_list_item_ok, new ArrayList<AtomPayment>());
+		adapter = new AtomPayListAdapter(AddNewPerson.this, R.layout.atom_pay_list_item_ok, new ArrayList<AtomPayment>(),true);
 		ListView atomPaysListView = (ListView)findViewById(R.id.EnterPays_atomPaysList);
 		atomPaysListView.setAdapter(adapter);
 	}
-	private void addData(String sms){
-		
-//		+ ", sms TEXT NOT NULL"
-//		+ ", isFinish TEXT  NULL"
-//		+ ", phoneNumber TEXT NOT NULL"  
-//		+ ", dateCreate DATE DEFAULT CURRENT_DATE NOT NULL" + ")";
-		ContentValues values = new ContentValues();
-		values.put("sms", sms);
-		values.put("isFinish", "0");
-		values.put("phoneNumber", "0989858867");
-		if (dbAdapter.insert(DBAdapter.STU_TABLE, values) < 0) {
-			Log.e("Error", "fff");
-			return;
-		}
-	}
+
 	private void setupAddPaymentButton() {
 		findViewById(R.id.EnterPays_addAtomPayment).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-//				addData("259/78/82c phan xich long tucap 109:"+Math.random());
-//				String isFinishFalse= "0";
-//				loadDataListView(isFinishFalse);
-				//adapter.insert(new AtomPayment("","", 0), 0);
-				dbAdapter.deleteTable();
-				int idx=0;
-				Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+				Toast.makeText(getApplicationContext(),"Đang tải..", Toast.LENGTH_SHORT).show();
+//				
+				int numBreak=0;
+				 String SORT_ORDER = "date DESC";
+				Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, SORT_ORDER);
 				  String msgData = "";
 				if (cursor.moveToFirst()) { // must check the result to prevent exception
 				    do {
+				     String myMsg ="";
+				     String myInsert="";
+				     String sodienthoai="";
+				     String noidung="";
+				     String ngaynhan="";
+				     String ngaygui="";
+				     for(int idx=0;idx<cursor.getColumnCount();idx++){
+					        myMsg+= " " + cursor.getColumnName(idx) + ":" + cursor.getString(idx);
+					  }
 				     
-//				       //for(int idx=0;idx<cursor.getColumnCount();idx++)
-//				    	for(int idx=0;idx<10;idx++)
-//				       {
-//				           msgData += " " + cursor.getColumnName(idx) + ":" + cursor.getString(idx);
-//				          
-//				           AddSms( cursor.getColumnName(idx) , cursor.getString(idx));
-//				           if(idx==10) break;
-//				       }
-				    	//{ "_id", "thread_id", "address", "person", "date", "body" },
-				    	
-				    	 AddSms( cursor.getString(5) +";" +cursor.getString(4) +";"+cursor.getString(3) +";"+cursor.getString(2),  cursor.getString(2)+";" +cursor.getString(3));
-				    	 idx++;
-				    	 if(idx==10) break;
+				      noidung =cursor.getString(cursor.getColumnIndexOrThrow("body"));
+				      Date date = new Date(cursor.getLong(cursor.getColumnIndexOrThrow("date")));
+		           	  String formattedDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+		           	  ngaynhan = formattedDate;
+		           	  sodienthoai= cursor.getString(cursor.getColumnIndexOrThrow("address"));
+		           	  String smsSave =ngaynhan +System.getProperty("line.separator")+cursor.getString(cursor.getColumnIndexOrThrow("body"))+";"+sodienthoai;
+				      AddSms( smsSave,  sodienthoai,date);
+				      numBreak++;
+				    	//if(numBreak==200) break;
 				       // use msgData
 				    } while (cursor.moveToNext());
 				} else {
 				   // empty box, no SMS
 				}
-				Toast.makeText(getApplicationContext(), msgData, Toast.LENGTH_SHORT).show();
+				refresh();
+				Toast.makeText(getApplicationContext(),"Đã tải xong..", Toast.LENGTH_SHORT).show();
 				
 			}
 		});
 		
 			findViewById(R.id.btnNotOK).setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				
@@ -210,27 +206,48 @@ public class AddNewPerson extends Activity {
 					btnOK.setBackgroundColor(Color.RED);
 					btnNotOK.setBackgroundColor(Color.GRAY);
 					String isFinishTrue= "1";
-					
 					loadDataListView(isFinishTrue);
 					//adapter.insert(new AtomPayment("","", 0), 0);
 				}
 			});
 
 	}
-	
-public void AddSms(String msg,String phoneNu){
-	 ContentValues values = new ContentValues();
-     String myNumber =phoneNu;
-   //kiem tra tin nhan trung,co the lay tat ca tin nhan duoc gui den neu con trong may
-     String sms = msg;
-		values.put("sms",sms);
-		values.put("isFinish", "0");
-		values.put("phoneNumber", myNumber);
-		//if(myNumber==this.getString(R.string.PHONE_NUMBER) )
-		if (dbAdapter.insert(DBAdapter.STU_TABLE, values) < 0) {
-			Log.e("Error", "fff");
-			return;
-		}	
-}
+	//region dss
+	private String getDateTime(Date dt) {
+	        SimpleDateFormat dateFormat = new SimpleDateFormat(
+	                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+	   
+	        dateFormat.format(dt);
+	      //endregion beFound
+
+	         
+	        return dateFormat.format(dt);
+	}
+	private boolean isExist(long datestr){
+		
+		ArrayList<ContentValues> ar = dbAdapter.getData("Select * from tbl_sms where dateLong="+datestr+"", new String[]{});
+		if(ar.size()==1)
+			return true;
+		return false;
+	}
+	public void AddSms(String msg,String phoneNu,Date dateCreate){
+		 ContentValues values = new ContentValues();
+	     String myNumber =phoneNu;
+	   //kiem tra tin nhan trung,co the lay tat ca tin nhan duoc gui den neu con trong may
+	     String sms = msg;
+			values.put("sms",sms);
+			values.put("isFinish", "0");
+			values.put("phoneNumber", myNumber);
+			String dateStr = getDateTime(dateCreate);
+			values.put("dateCreate", dateStr);
+			values.put("dateLong", dateCreate.getTime());
+			if(myNumber.equals(this.getString(R.string.PHONE_NUMBER)))
+			if(isExist( dateCreate.getTime())==false)
+			if (dbAdapter.insert(DBAdapter.STU_TABLE, values) < 0) {
+				Log.e("Error", "fff");
+				return;
+			}	
+	}
+	//endregion dss
 
 }

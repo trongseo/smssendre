@@ -21,12 +21,13 @@ public class AtomPayListAdapter extends ArrayAdapter<AtomPayment> {
 	private List<AtomPayment> items;
 	private int layoutResourceId;
 	private Context context;
-
-	public AtomPayListAdapter(Context context, int layoutResourceId, List<AtomPayment> items) {
+public static boolean isF = false;
+	public AtomPayListAdapter(Context context, int layoutResourceId, List<AtomPayment> items,boolean isFinish) {
 		super(context, layoutResourceId, items);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.items = items;
+		isF = isFinish;
 	}
 
 	@Override

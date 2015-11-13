@@ -38,8 +38,8 @@ android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
        	android:visibility="visible"
-        android:text="@string/EnterPays_addPayment"
-        android:drawableLeft="@android:drawable/ic_input_add" />
+        android:text="Tải... "
+        android:drawableLeft="@android:drawable/ic_menu_more" />
     </LinearLayout>
     
   

@@ -138,8 +138,8 @@ public class DBAdapter {
 	 */
 
 	private class DBHelper extends SQLiteOpenHelper {
-		private static final int VERSION = 1;
-		private static final String DB_NAME = "smsdb1.db";
+		private static final int VERSION = 2;
+		private static final String DB_NAME = "smsdb.db";
 
 		public DBHelper(Context context) {
 			super(context, DB_NAME, null, VERSION);
@@ -153,6 +153,7 @@ public class DBAdapter {
 					+ ", sms TEXT NOT NULL"
 					+ ", isFinish TEXT  NULL"
 					+ ", phoneNumber TEXT NOT NULL"  
+					+ ", dateLong number NOT NULL"  
 					+ ", dateCreate datetime DEFAULT current_timestamp NOT NULL" + ")";
 
 			db.execSQL(create_sql);

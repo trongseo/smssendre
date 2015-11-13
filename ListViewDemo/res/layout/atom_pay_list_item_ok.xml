@@ -47,6 +47,6 @@
         android:contentDescription="@string/app_name"
         android:onClick="removeAtomPayOnClickHandler"
         android:src="@android:drawable/ic_menu_delete"
-        android:visibility="gone"
+        android:visibility="visible"
          />
 </LinearLayout>
