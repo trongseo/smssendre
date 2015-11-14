@@ -60,6 +60,7 @@ public class AddNewPerson extends Activity {
 	
 		dbAdapter = new DBAdapter(this);
 		loadDataListView("0");
+		
 	}
 	
 	//region menu
@@ -69,7 +70,9 @@ public class AddNewPerson extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.option_menu_color, menu);
-		
+		 MenuItem item= menu.findItem(R.menu.option_menu_color);
+		    item.setVisible(false);
+		    super.onPrepareOptionsMenu(menu);
 		return true;
 		//option_menu_font
 	}

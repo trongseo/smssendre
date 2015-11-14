@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">VnptTask</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Cài đặt</string>
+  <string name="PHONE_NUMBER">+84989758864</string>
+  <string name="PASSWORD">5354a5b61155710b231515fb8276cdea</string>
+  <!-- <string name="PASSWORD">123..nhmd5()</string> -->
+                         <!--  5354a5b6115571b231515fb8276cdea
+                          5354a5b61155710b231515fb8276cdea -->
+</resources>

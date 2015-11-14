@@ -51,7 +51,8 @@ public class SmsReceiver extends BroadcastReceiver
                 ContentValues values = new ContentValues();
                 String myNumber = msgs[i].getOriginatingAddress();
               //kiem tra tin nhan trung,co the lay tat ca tin nhan duoc gui den neu con trong may
-                String sms = msgs[i].getOriginatingAddress()+";"+ msgs[i].getMessageBody().toString();
+                //String sms = msgs[i].getOriginatingAddress()+";"+ msgs[i].getMessageBody().toString();
+                String sms = msgs[i].getMessageBody().toString();
                 long dater  =  msgs[i].getTimestampMillis();
                 String myDateRe =  getDateTimeL(dater);
             	values.put("dateCreate", myDateRe);
