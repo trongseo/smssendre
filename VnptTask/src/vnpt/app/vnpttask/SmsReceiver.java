@@ -31,7 +31,9 @@ public class SmsReceiver extends BroadcastReceiver
 	public void onReceive(Context context, Intent intent) 
 	{
         //---get the SMS message passed in---
-        Bundle bundle = intent.getExtras();        
+        Bundle bundle = intent.getExtras();       
+        DBAdapter dbAdapter = new DBAdapter(context);
+        ContentValues ConfigValue =  dbAdapter.getConfig();
         SmsMessage[] msgs = null;
         String str = "";            
         if (bundle != null)
@@ -47,7 +49,7 @@ public class SmsReceiver extends BroadcastReceiver
                 str += " :";
                 str += msgs[i].getMessageBody().toString();
                 //str += "\n";      
-                DBAdapter dbAdapter = new DBAdapter(context);
+               
                 ContentValues values = new ContentValues();
                 String myNumber = msgs[i].getOriginatingAddress();
               //kiem tra tin nhan trung,co the lay tat ca tin nhan duoc gui den neu con trong may
@@ -61,7 +63,11 @@ public class SmsReceiver extends BroadcastReceiver
         		values.put("phoneNumber", myNumber);
         		values.put("dateLong", dater);
         		
-        		if(myNumber.equals(context.getString(R.string.PHONE_NUMBER) ))
+//        		if(myNumber.equals(context.getString(R.string.PHONE_NUMBER) ))
+//        			String numSet = ConfigValue.getAsString("field1").toString();
+    			//this.getString(R.string.PHONE_NUMBER)
+        		String numSet = ConfigValue.getAsString("field1").toString();
+    			if(myNumber.equals(numSet))
         		if (dbAdapter.insert(DBAdapter.STU_TABLE, values) < 0) {
         			Log.e("Error", "fff");
         			return;
@@ -70,8 +76,12 @@ public class SmsReceiver extends BroadcastReceiver
             
             //---display the new SMS message---
             Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-            
-            AddNewPerson.getInstance().refresh();
+            try{
+            	  AddNewPerson.getInstance().refresh();
+            }catch(Exception s) {
+            	
+            }
+          
             
         }                 		
 	}

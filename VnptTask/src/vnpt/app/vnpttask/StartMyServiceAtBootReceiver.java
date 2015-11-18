@@ -10,7 +10,9 @@ public class StartMyServiceAtBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             Intent serviceIntent = new Intent(context, AddNewPerson.class);
-            context.startService(serviceIntent);
+            //context.startService(serviceIntent);
+            context.startActivity(serviceIntent);
+            
         }
     }
 }

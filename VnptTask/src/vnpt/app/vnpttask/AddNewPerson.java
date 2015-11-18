@@ -15,10 +15,12 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap.Config;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -155,12 +157,15 @@ public class AddNewPerson extends Activity {
 	public void removeAtomPay(AtomPayment itemToRemove){
 		adapter.remove(itemToRemove);
 		double idre = itemToRemove.getValue();
+		
 		String[] arrCon= new String[]{};
 		String smsS="Bạn đã hoàn thành công việc ?";
 		if(adapter.isF==true){
 			dbAdapter.runSQL("delete from tbl_sms where  _id="+idre, arrCon);
 		}else
 		{
+			SmsManager smsManager = SmsManager.getDefault();
+			smsManager.sendTextMessage(ConfigValue.getAsString("field1").toString(), null, "OK:"+itemToRemove.getName(), null, null);
 			dbAdapter.runSQL("update tbl_sms set isFinish=1 where _id="+idre, arrCon);	
 		}
 		
@@ -296,7 +301,10 @@ public class AddNewPerson extends Activity {
 			String dateStr = getDateTime(dateCreate);
 			values.put("dateCreate", dateStr);
 			values.put("dateLong", dateCreate.getTime());
-			if(myNumber.equals(this.getString(R.string.PHONE_NUMBER)))
+			String numSet = ConfigValue.getAsString("field1").toString();
+			//this.getString(R.string.PHONE_NUMBER)
+			Log.d("xxxxxx",myNumber+"ddd"+numSet);
+			if(myNumber.equals(numSet))
 			if(isExist( dateCreate.getTime())==false)
 			if (dbAdapter.insert(DBAdapter.STU_TABLE, values) < 0) {
 				Log.e("Error", "fff");
