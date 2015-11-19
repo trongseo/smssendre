@@ -3,15 +3,21 @@ package vnpt.app.vnpttask;
 
 
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.R.bool;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,8 +25,10 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -154,10 +162,29 @@ public class AddNewPerson extends Activity {
 					}
 					builder.setMessage(smsS) .setPositiveButton("Ok", dialogClickListener) .setNegativeButton("Chưa", dialogClickListener).show(); 
 	}
+    String uri;
 	public void removeAtomPay(AtomPayment itemToRemove){
 		adapter.remove(itemToRemove);
 		double idre = itemToRemove.getValue();
+		String phoneNumber ="";
 		
+//		if(MyUtils.isOnline(AddNewPerson.this)==false){
+//			MyUtils.showToast("Chưa bật kết nối wifi!", AddNewPerson.this);
+//		}
+//			
+//		uri = Uri.parse("http://googleg9.com:8111/sms.php")
+//                .buildUpon()
+//                .appendQueryParameter("sms", phoneNumber+":"+itemToRemove.getName())
+//                .appendQueryParameter("date", "2015-01-01")
+//                .build().toString();
+//
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                new LoadDataTask().execute(uri);
+//            }
+//        });
+//        
 		String[] arrCon= new String[]{};
 		String smsS="Bạn đã hoàn thành công việc ?";
 		if(adapter.isF==true){
@@ -168,6 +195,26 @@ public class AddNewPerson extends Activity {
 			ConfigValue =  dbAdapter.getConfig();
 			smsManager.sendTextMessage(ConfigValue.getAsString("field1").toString(), null, "OK:"+itemToRemove.getName(), null, null);
 			dbAdapter.runSQL("update tbl_sms set isFinish=1 where _id="+idre, arrCon);	
+			 //getData from server
+
+			
+			if(MyUtils.isOnline(AddNewPerson.this)==false){
+				MyUtils.showToast("Chưa online!", AddNewPerson.this);
+			}else{
+				 uri = Uri.parse("http://googleg9.com:8111/sms.php")
+		                    .buildUpon()
+		                    .appendQueryParameter("sms", itemToRemove.getName())
+		                    .appendQueryParameter("date", "2015-01-01")
+		                    .build().toString();
+
+		            runOnUiThread(new Runnable() {
+		                @Override
+		                public void run() {
+		                    new LoadDataTask().execute(uri);
+		                }
+		            });
+			}
+           
 		}
 		
 	}
@@ -315,4 +362,67 @@ public class AddNewPerson extends Activity {
 	}
 	//endregion dss
 
+	
+	//class LoadDataTask
+    class LoadDataTask extends AsyncTask<String,JSONObject,Void> {
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String url=params[0];
+            HttpConnection con = new HttpConnection();
+            JSONObject jsonObj;
+            try {
+                String jsonString = con.sendGet(url);
+                jsonObj = new JSONObject(jsonString);
+                publishProgress(jsonObj);
+            } catch (IOException e) {
+               // e.printStackTrace();
+            } catch (JSONException e) {
+               e.printStackTrace();
+            }
+            catch (Exception e) {
+                //e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(JSONObject... values) {
+            super.onProgressUpdate(values);
+            JSONObject root = values[0];
+            try {
+//                JSONArray arr_json = root.getJSONObject("result").getJSONArray("values");
+//                String err = root.getJSONObject("result").getString("err");
+//
+//                if(err.equals("none") ) {
+//                    for (int i = 0; i < arr_json.length(); i++) {
+//                        JSONObject item = arr_json.getJSONObject(i);
+//                        String kanji = item.getString("kanji");
+//                        String hira = item.getString("hira");
+//                        String han = item.getString("han");
+//                        String viet = item.getString("viet");
+//                        String type = item.getString("type");
+//
+//                       
+//                    }
+            	 	String resS=root.getString("ok");
+                    Toast.makeText(AddNewPerson.this, "Đã cập nhật", Toast.LENGTH_LONG).show();
+                    resS="";
+//                }else {
+//                    Toast.makeText(AddNewPerson.this, err, Toast.LENGTH_LONG).show();
+//                }
+
+            } catch (JSONException e) {
+                Toast.makeText(AddNewPerson.this, e.toString(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+
+    }
+    
 }
