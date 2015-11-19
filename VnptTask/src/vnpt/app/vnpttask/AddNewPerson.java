@@ -59,7 +59,7 @@ public class AddNewPerson extends Activity {
 	
 		setContentView(R.layout.activity_list_view);
 		dbAdapter = new DBAdapter(this);
-		ConfigValue =  dbAdapter.getConfig();
+		
 		setupListViewAdapter();
 		
 		setupAddPaymentButton();
@@ -165,6 +165,7 @@ public class AddNewPerson extends Activity {
 		}else
 		{
 			SmsManager smsManager = SmsManager.getDefault();
+			ConfigValue =  dbAdapter.getConfig();
 			smsManager.sendTextMessage(ConfigValue.getAsString("field1").toString(), null, "OK:"+itemToRemove.getName(), null, null);
 			dbAdapter.runSQL("update tbl_sms set isFinish=1 where _id="+idre, arrCon);	
 		}
@@ -209,6 +210,7 @@ public class AddNewPerson extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				ConfigValue =  dbAdapter.getConfig();
 				Toast.makeText(getApplicationContext(),"Đang tải..", Toast.LENGTH_SHORT).show();
 				setButton("istai");
 //				Thread thread = new Thread() {
