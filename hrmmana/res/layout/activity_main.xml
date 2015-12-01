@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <TableLayout
+        android:id="@+id/widget38"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <ScrollView
+            android:id="@+id/scvInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+            <WebView
+                android:id="@+id/webView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true" />
+        </ScrollView>
+        <RelativeLayout android:id="@+id/RelativeLayout01" 
+    
+    >
+        <TableLayout
+            android:id="@+id/widget389"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" 
+             android:layout_centerInParent="true"
+            >
+            <TableRow
+                android:id="@+id/widget39"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <Button
+                    android:id="@+id/btnPre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="&lt;&lt;" />                
+                <Button
+                    android:id="@+id/btnMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trang chủ" />
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">>" />
+                <Button
+                    android:id="@+id/btnLon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+                <Button
+                    android:id="@+id/btnNho"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+               
+            </TableRow>
+        </TableLayout>
+        </RelativeLayout>
+    </TableLayout>
+</LinearLayout>
